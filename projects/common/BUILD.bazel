@@ -1,0 +1,12 @@
+load("@common_requirements//:requirements.bzl", "requirement")
+load("@rules_python//python:defs.bzl", "py_binary")
+
+py_library(
+    name="common",
+    srcs = glob(["src/*"]),
+    imports = ["."],
+    visibility = ["//visibility:public"],
+    deps = [
+        requirement("django"),
+    ],
+)
