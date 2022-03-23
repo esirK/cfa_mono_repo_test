@@ -1,0 +1,38 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+load("@twoopstracker_requirements//:requirements.bzl", "requirement")
+
+py_binary(
+    name="twoopstracker",
+    srcs=["manage.py"],
+    main="manage.py",
+    deps=[
+        "//projects/common:common",
+        requirement("boto3"),
+        requirement("celery"),
+        requirement("environs"),
+        requirement("dj_database_url"),
+        requirement("psycopg2-binary"),
+        requirement("django-cors-headers"),
+        requirement("django-storages"),
+        requirement("djangorestframework"),
+        requirement("djangorestframework-simplejwt"),
+        requirement("django-allauth"),
+        requirement("dj-rest-auth"),
+        requirement("google-api-python-client"),
+        requirement("google-auth-httplib2"),
+        requirement("google-auth-oauthlib"),
+        requirement("greenlet"),
+        requirement("gunicorn"),
+        requirement("redis"),
+        requirement("requests"),
+        requirement("tweepy"),
+        requirement("tablib"),
+        requirement("sentry-sdk"),
+    ]
+)
+
+sh_binary(
+    name="twoopstracker_worker",
+    srcs=["worker.sh"],
+    data = [":twoopstracker"],
+)
