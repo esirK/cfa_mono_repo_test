@@ -31,16 +31,26 @@ py_binary(
 )
 
 py_binary(
-    name="twoopstracker_worker",
-    srcs=["gunicorn.py"],
-    main="gunicorn.py",
-    deps=[requirement("gunicorn"),]
+    name="manage_gunicorn",
+    srcs=["gunicorn_worker.py"],
+    main="gunicorn_worker.py",
+    deps=[
+        requirement("gunicorn"),
+        requirement("gevent"),
+    ]
+)
+
+py_binary(
+    name="manage_celery",
+    srcs=["celery_worker.py"],
+    main="celery_worker.py",
+    deps=[":twoopstracker",]
 )
 
 # https://stackoverflow.com/a/64841428/5562041
 sh_binary(
     name="worker",
     srcs=["worker.sh"],
-    data = [":twoopstracker"],
-    deps = ["@bazel_tools//tools/bash/runfiles", requirement("celery"),],
+    data = [":twoopstracker", ":manage_gunicorn", ":manage_celery"],
+    deps = ["@bazel_tools//tools/bash/runfiles",],
 )
