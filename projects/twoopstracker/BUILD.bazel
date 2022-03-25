@@ -22,7 +22,6 @@ py_binary(
         requirement("google-auth-httplib2"),
         requirement("google-auth-oauthlib"),
         requirement("greenlet"),
-        requirement("gunicorn"),
         requirement("redis"),
         requirement("requests"),
         requirement("tweepy"),
@@ -31,8 +30,17 @@ py_binary(
     ]
 )
 
-sh_binary(
+py_binary(
     name="twoopstracker_worker",
+    srcs=["gunicorn.py"],
+    main="gunicorn.py",
+    deps=[requirement("gunicorn"),]
+)
+
+# https://stackoverflow.com/a/64841428/5562041
+sh_binary(
+    name="worker",
     srcs=["worker.sh"],
     data = [":twoopstracker"],
+    deps = ["@bazel_tools//tools/bash/runfiles", requirement("celery"),],
 )

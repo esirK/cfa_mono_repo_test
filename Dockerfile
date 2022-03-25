@@ -15,7 +15,7 @@ RUN npm install -g @bazel/bazelisk && bazelisk
 
 EXPOSE 8000
 
-# run bazelisk with project passed as environment variable
+# run bazelisk with project and arguments passed as environment variable
 CMD [ "bazelisk", "run", "projects/twoopstracker:twoopstracker", "--", "runserver", "0.0.0.0:8000" ]
 # The projects/twoopstracker:twoopstracker should be passed as an environment variable
 # CMD [ "bazelisk", "run", $PROJECT ]
